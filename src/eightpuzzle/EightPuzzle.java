@@ -6,6 +6,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 
 /**
  *
@@ -21,10 +22,11 @@ public class EightPuzzle {
         //JFrame Setup
         JFrame frame = new JFrame("Solutions for Eight Puzzle");
         frame.setVisible(true);
-        frame.setSize(300, 150);
+        frame.setSize(400, 150);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         //JPanel setup With two buttons
         JPanel panel = new JPanel();
+        panel.setBorder(new EmptyBorder(25, 10, 10, 10));
         frame.add(panel);
         JButton button = new JButton("Depth First");
         panel.add(button);
@@ -94,7 +96,7 @@ public class EightPuzzle {
     public void bestFirst() {
         resetBoard();
         Board.resetNumCreated();
-        System.out.println("Depth First Solve - Steps to Solution");
+        System.out.println("Best First Solve - Steps from Completion");
         new BestFirst(board);
         updateCount();
     }

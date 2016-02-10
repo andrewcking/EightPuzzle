@@ -15,8 +15,10 @@ public class Board {
     public int[][] array;
     private int zeroX;
     private int zeroY;
+    private int match;
     private Random rand = new Random();
     private Board parent;
+    //to determine the number of searches performed
     private static Integer numCreated = 0;
 
     Board() {
@@ -33,12 +35,6 @@ public class Board {
         zeroY = 0;
     }
 
-    public static int getNumCreated(){
-        return numCreated;
-    }
-    public static void resetNumCreated(){
-        numCreated = 0;
-    }
     public Board(Board board) {
         this.array = new int[3][3];
         for (int i = 0; i < 3; i++) {
@@ -46,10 +42,28 @@ public class Board {
                 this.array[i][j] = board.array[i][j];
             }
         }
+        //to determine match score for best first
+        match = evaluate(board);
         this.zeroX = board.zeroX;
         this.zeroY = board.zeroY;
         parent = board;
         numCreated++;
+    }
+
+    public int getMatch(Board board){
+        return match;
+    }
+
+    public int evaluate(Board board) {
+        int match = 0;
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (board.array[i][j] == new Board().array[i][j]) {
+                    match++;
+                }
+            }
+        }
+        return match;
     }
 
     @Override
@@ -60,7 +74,6 @@ public class Board {
                     if (((Board) obj).array[i][j] != this.array[i][j]) {
                         //a return will end 
                         return false;
-
                     }
                 }
             }
@@ -88,7 +101,6 @@ public class Board {
     }
 
     //move zero peice down
-
     public boolean moveDown() {
         if (zeroY + 1 > 2) {
             return false;
@@ -142,6 +154,14 @@ public class Board {
         if (parent != null) {
             parent.printAll();
         }
+    }
+
+    public static int getNumCreated() {
+        return numCreated;
+    }
+
+    public static void resetNumCreated() {
+        numCreated = 0;
     }
 
     @Override
