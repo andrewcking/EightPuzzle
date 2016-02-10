@@ -17,6 +17,7 @@ public class Board {
     private int zeroY;
     private Random rand = new Random();
     private Board parent;
+    private static Integer numCreated = 0;
 
     Board() {
         //initialize array values to zero
@@ -32,6 +33,12 @@ public class Board {
         zeroY = 0;
     }
 
+    public static int getNumCreated(){
+        return numCreated;
+    }
+    public static void resetNumCreated(){
+        numCreated = 0;
+    }
     public Board(Board board) {
         this.array = new int[3][3];
         for (int i = 0; i < 3; i++) {
@@ -42,6 +49,7 @@ public class Board {
         this.zeroX = board.zeroX;
         this.zeroY = board.zeroY;
         parent = board;
+        numCreated++;
     }
 
     @Override

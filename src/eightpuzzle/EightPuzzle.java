@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
@@ -13,6 +14,8 @@ import javax.swing.JPanel;
 public class EightPuzzle {
 
     private Board board;
+
+    private JLabel test;
 
     private EightPuzzle() {
         //JFrame Setup
@@ -27,6 +30,12 @@ public class EightPuzzle {
         panel.add(button);
         JButton button2 = new JButton("Breadth First");
         panel.add(button2);
+        JButton button3 = new JButton("Best First");
+        panel.add(button3);
+        JLabel searchTitle = new JLabel("Boards Searched");
+        panel.add(searchTitle);
+        test = new JLabel("0");
+        panel.add(test);
         //Button Action Listeners
         button.addActionListener(new ActionListener() {
             @Override
@@ -41,7 +50,18 @@ public class EightPuzzle {
                 breadthFirst();
             }
         });
+        button3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
 
+                bestFirst();
+            }
+        });
+
+    }
+
+    public void updateCount() {
+        test.setText(String.valueOf(Board.getNumCreated()));
     }
 
     public void resetBoard() {
@@ -57,14 +77,26 @@ public class EightPuzzle {
 
     public void breadthFirst() {
         resetBoard();
+        Board.resetNumCreated();
         System.out.println("Breadth First Solve - Steps from Completion");
         new BreadthFirst(board);
+        updateCount();
     }
 
     public void depthFirst() {
         resetBoard();
+        Board.resetNumCreated();
         System.out.println("Depth First Solve - Steps to Solution");
         new DepthFirst(board);
+        updateCount();
+    }
+
+    public void bestFirst() {
+        resetBoard();
+        Board.resetNumCreated();
+        System.out.println("Depth First Solve - Steps to Solution");
+        new BestFirst(board);
+        updateCount();
     }
 
     /**
