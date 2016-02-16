@@ -10,11 +10,16 @@ public class DepthFirst {
 
     private ArrayList list;
     //technically speaking we are only scrambled 10 it shouldnt need more than that
+    //the limit prevents a stackoverflow error, but also technically makes it a hybrid with breadthfirst
     private int LIMIT = 15;
+    Board currentBoard;
 
     public DepthFirst(Board board) {
         list = new ArrayList();
-        search(board, 0);
+        //this creates a copy so it isn't actually changing board
+        //we want this because otherwise we cannot accuratly compare the counts
+        currentBoard = new Board(board);
+        search(currentBoard, 0);
     }
 
     private boolean search(Board board, int count) {

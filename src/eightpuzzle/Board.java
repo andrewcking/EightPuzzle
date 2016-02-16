@@ -15,11 +15,15 @@ public class Board {
     public int[][] array;
     private int zeroX;
     private int zeroY;
-    private int match;
+
     private Random rand = new Random();
     private Board parent;
     //to determine the number of searches performed
     private static Integer numCreated = 0;
+    //For Best First Heuristics - Matching Scores
+    private int matchScore;
+    private int matchManhat;
+    private int matchOther;
 
     Board() {
         //initialize array values to zero
@@ -35,6 +39,7 @@ public class Board {
         zeroY = 0;
     }
 
+    //deep copy
     public Board(Board board) {
         this.array = new int[3][3];
         for (int i = 0; i < 3; i++) {
@@ -43,29 +48,28 @@ public class Board {
             }
         }
         //to determine match score for best first
-        match = evaluate(board);
+        matchScore = evaluate(board);
+        matchManhat = evaluateManhat(board);
+        matchOther = evaluateOther(board);
         this.zeroX = board.zeroX;
         this.zeroY = board.zeroY;
         parent = board;
         numCreated++;
     }
 
-    public int getMatch(Board board){
-        return match;
+    public int getMatch(Board board) {
+        return matchScore;
     }
 
-    public int evaluate(Board board) {
-        int match = 0;
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                if (board.array[i][j] == new Board().array[i][j]) {
-                    match++;
-                }
-            }
-        }
-        return match;
+    public int getMatchManhat(Board board) {
+        return matchManhat;
     }
 
+    public int getMatchOther(Board board) {
+        return matchOther;
+    }
+
+    //Checking for equality (has board been hit before?)
     @Override
     public boolean equals(Object obj) {
         if (obj instanceof Board) {
@@ -100,7 +104,7 @@ public class Board {
         }
     }
 
-    //move zero peice down
+    //Movements of the zero peice
     public boolean moveDown() {
         if (zeroY + 1 > 2) {
             return false;
@@ -149,6 +153,7 @@ public class Board {
 //        System.out.println("" + array[1][0] + "" + array[1][1] + "" + array[1][2]);
 //        System.out.println("" + array[2][0] + "" + array[2][1] + "" + array[2][2] + "\n");
 //    }
+    //For printing the solution path
     public void printAll() {
         System.out.println(this);
         if (parent != null) {
@@ -156,12 +161,62 @@ public class Board {
         }
     }
 
+    //To compare methods and heuristics
     public static int getNumCreated() {
         return numCreated;
     }
 
     public static void resetNumCreated() {
         numCreated = 0;
+    }
+
+    //Heuristics
+    public int evaluate(Board board) {
+        int noMatch = 0;
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (board.array[i][j] != new Board().array[i][j]) {
+                    noMatch++;
+                }
+            }
+        }
+        return noMatch;
+    }
+
+    public int evaluateManhat(Board board) {
+        int manhattanDistanceSum = 0;
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                int value = board.array[i][j];
+                if (value != 0) {
+                    int targetI = value / 3; // expected row coord
+                    int targetJ = value % 3; // expected col coord
+                    int dx = i - targetI; // x-distance
+                    int dy = j - targetJ; // y-distance
+                    manhattanDistanceSum += Math.abs(dx) + Math.abs(dy);
+                }
+            }
+        }
+        return manhattanDistanceSum;
+    }
+    // This increases the count if the peice is more than one off
+    public int evaluateOther(Board board) {
+        int customHeuristic = 0;
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                int value = board.array[i][j];
+                if (value != 0) {
+                    int targetI = value / 3; // expected row coord
+                    int targetJ = value % 3; // expected col coord
+                    int dx = i - targetI; // x-distance
+                    int dy = j - targetJ; // y-distance
+                    if(Math.abs(dx) + Math.abs(dy) > 1){
+                        customHeuristic++;
+                    };
+                }
+            }
+        }
+        return customHeuristic;
     }
 
     @Override
