@@ -5,6 +5,8 @@ import java.util.ArrayList;
 /**
  *
  * @author Andrew
+ * The output occasionally appears to jump, this is not an error
+ * but rather indicates a jump to a higher path in the solution tree
  */
 public class DepthFirst {
 

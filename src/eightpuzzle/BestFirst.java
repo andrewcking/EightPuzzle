@@ -9,64 +9,57 @@ import java.util.ArrayList;
 public class BestFirst {
 
     private ArrayList<Board> list;
-    private ArrayList<Integer> checked;
     private int flag;
     private int highValue;
 
     public BestFirst(Board board, int setFlag) {
         list = new ArrayList();
         flag = setFlag;
-        checked = new ArrayList();
         search(board);
     }
 
-    public int getTheBest(ArrayList list) {
+    public Board getTheBest(ArrayList list) {
         //the max value an int can have
         highValue = Integer.MAX_VALUE;
-        int bestBoard = 0;
+        Board bestBoard = null;
         //Run through list (queue)
         for (int i = 0; i < list.size(); i++) {
-            //For each item check it against the checked list
-            if (!checked.contains(i)) {
-                //Get the unchecked board
-                Board board = (Board) list.get(i);
-                //Pick Heuristic based on flag
-                //Hamming distance
-                if (flag == 0) {
-                    if (board.getMatch(board) < highValue) {
-                        highValue = board.getMatch(board);
-                        bestBoard = i;
-                    }
-                }
-                //Manhattan Distance
-                if (flag == 1) {
-                    if (board.getMatchManhat(board) < highValue) {
-                        highValue = board.getMatchManhat(board);
-                        bestBoard = i;
-                    }
-                }
-                //Other Heuristic
-                if (flag == 2) {
-                    if (board.getMatchOther(board) < highValue) {
-                        highValue = board.getMatchOther(board);
-                        bestBoard = i;
-                    }
+            Board board = (Board) list.get(i);
+            //Pick Heuristic based on flag
+            //Hamming distance
+            if (flag == 0) {
+                if (board.getMatch(board) < highValue) {
+                    highValue = board.getMatch(board);
+                    bestBoard = board;
                 }
             }
+            //Manhattan Distance
+            if (flag == 1) {
+                if (board.getMatchManhat(board) < highValue) {
+                    highValue = board.getMatchManhat(board);
+                    bestBoard = board;
+                }
+            }
+            //Other Heuristic
+            if (flag == 2) {
+                if (board.getMatchOther(board) < highValue) {
+                    highValue = board.getMatchOther(board);
+                    bestBoard = board;
+                }
+            }
+
         }
 
-        //add the best board so we don't run it again
-        checked.add(bestBoard);
+        list.remove(bestBoard);
         return bestBoard;
     }
 
     private boolean search(Board board) {
         list.add(new Board(board));
         while (true) {
-            Board currentBoard = list.get(getTheBest(list));
+            Board currentBoard = getTheBest(list);
             if (currentBoard.isSolved()) {
                 currentBoard.printAll();
-                System.out.println(checked);
                 return false;
             }
             if (currentBoard.moveUp()) {

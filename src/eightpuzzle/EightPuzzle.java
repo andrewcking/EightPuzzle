@@ -33,7 +33,7 @@ public class EightPuzzle {
         JPanel panel = new JPanel();
         panel.setBorder(new EmptyBorder(25, 10, 10, 10));
         frame.add(panel);
-
+        
         //Buttons
         JButton button0 = new JButton("Generate New Board");
         panel.add(button0);
