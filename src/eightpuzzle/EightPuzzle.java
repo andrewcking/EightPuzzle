@@ -178,6 +178,12 @@ public class EightPuzzle {
         }
         System.out.println("Randomized Board");
         System.out.println(board);
+        //Reset count labels
+        DepthFirst.setText(String.valueOf("0"));;
+        BreadthFirst.setText(String.valueOf("0"));;
+        BestFirst.setText(String.valueOf("0"));;
+        BestFirstManhat.setText(String.valueOf("0"));;
+        BestFirstCustom.setText(String.valueOf("0"));;
     }
 
     /**

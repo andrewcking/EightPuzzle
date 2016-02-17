@@ -148,11 +148,6 @@ public class Board {
         return this.equals(new Board());
     }
 
-//    public void printOut() {
-//        System.out.println("" + array[0][0] + "" + array[0][1] + "" + array[0][2]);
-//        System.out.println("" + array[1][0] + "" + array[1][1] + "" + array[1][2]);
-//        System.out.println("" + array[2][0] + "" + array[2][1] + "" + array[2][2] + "\n");
-//    }
     //For printing the solution path
     public void printAll() {
         System.out.println(this);
@@ -199,6 +194,7 @@ public class Board {
         }
         return manhattanDistanceSum;
     }
+
     // This increases the count if the peice is more than one off
     public int evaluateOther(Board board) {
         int customHeuristic = 0;
@@ -210,7 +206,7 @@ public class Board {
                     int targetJ = value % 3; // expected col coord
                     int dx = i - targetI; // x-distance
                     int dy = j - targetJ; // y-distance
-                    if(Math.abs(dx) + Math.abs(dy) > 1){
+                    if (Math.abs(dx) + Math.abs(dy) > 1) {
                         customHeuristic++;
                     };
                 }
@@ -228,4 +224,10 @@ public class Board {
         string = string.concat(" ‾‾‾‾‾‾\n");
         return string;
     }
+
+    //    public void printOut() {
+//        System.out.println("" + array[0][0] + "" + array[0][1] + "" + array[0][2]);
+//        System.out.println("" + array[1][0] + "" + array[1][1] + "" + array[1][2]);
+//        System.out.println("" + array[2][0] + "" + array[2][1] + "" + array[2][2] + "\n");
+//    }
 }
